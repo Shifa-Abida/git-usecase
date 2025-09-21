@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 Kids Coloring Book - Animals & Birds 🦁</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background shapes */
+        .bg-shape {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            background: #ff6b6b;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: #4ecdc4;
+            top: 60%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .bg-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            background: #ffe66d;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(0) rotate(180deg); }
+            75% { transform: translateY(20px) rotate(270deg); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            color: #fff;
+            font-size: 1.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 900px;
+            width: 100%;
+            z-index: 10;
+            position: relative;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .color-btn {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.2) rotate(10deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .color-btn.active {
+            border: 4px solid #333;
+            transform: scale(1.15);
+            animation: wiggle 0.5s;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg) scale(1.15); }
+            25% { transform: rotate(-5deg) scale(1.15); }
+            75% { transform: rotate(5deg) scale(1.15); }
+        }
+
+        .tool-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(238, 90, 36, 0.3);
+        }
+
+        .animal-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .animal-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .animal-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 10px rgba(108, 92, 231, 0.3);
+        }
+
+        .animal-btn.active {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            transform: scale(1.1);
+        }
+
+        .canvas-container {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            border: 5px solid #6c5ce7;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        canvas {
+            display: block;
+            cursor: crosshair;
+            background: white;
+        }
+
+        .brush-size {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .brush-size input {
+            width: 100px;
+        }
+
+        .eraser-btn {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #333;
+        }
+
+        .eraser-btn.active {
+            background: linear-gradient(135deg, #636e72 0%, #2d3436 100%);
+            color: white;
+        }
+
+        .fun-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #6c5ce7;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            .color-btn {
+                width: 40px;
+                height: 40px;
+            }
+            .btn { 
+                padding: 10px 20px; 
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape"></div>
+    <div class="bg-shape"></div>
+    <div class="bg-shape"></div>
+
+    <header>
+        <h1>🌈 Magic Coloring Book 🎨</h1>
+        <p class="subtitle">Choose an animal and start coloring!</p>
+    </header>
+
+    <div class="main-container">
+        <div class="animal-selector">
+            <button class="animal-btn active" onclick="selectAnimal('lion')">🦁 Lion</button>
+            <button class="animal-btn" onclick="selectAnimal('elephant')">🐘 Elephant</button>
+            <button class="animal-btn" onclick="selectAnimal('butterfly')">🦋 Butterfly</button>
+            <button class="animal-btn" onclick="selectAnimal('parrot')">🦜 Parrot</button>
+            <button class="animal-btn" onclick="selectAnimal('cat')">🐱 Cat</button>
+            <button class="animal-btn" onclick="selectAnimal('owl')">🦉 Owl</button>
+        </div>
+
+        <div class="controls">
+            <div class="color-palette">
+                <div class="color-btn active" style="background-color: #ff6b6b" onclick="selectColor('#ff6b6b')"></div>
+                <div class="color-btn" style="background-color: #4ecdc4" onclick="selectColor('#4ecdc4')"></div>
+                <div class="color-btn" style="background-color: #45b7d1" onclick="selectColor('#45b7d1')"></div>
+                <div class="color-btn" style="background-color: #96ceb4" onclick="selectColor('#96ceb4')"></div>
+                <div class="color-btn" style="background-color: #ffeaa7" onclick="selectColor('#ffeaa7')"></div>
+                <div class="color-btn" style="background-color: #fd79a8" onclick="selectColor('#fd79a8')"></div>
+                <div class="color-btn" style="background-color: #a29bfe" onclick="selectColor('#a29bfe')"></div>
+                <div class="color-btn" style="background-color: #fdcb6e" onclick="selectColor('#fdcb6e')"></div>
+                <div class="color-btn" style="background-color: #6c5ce7" onclick="selectColor('#6c5ce7')"></div>
+                <div class="color-btn" style="background-color: #00b894" onclick="selectColor('#00b894')"></div>
+            </div>
+
+            <div class="brush-size">
+                <span>Brush Size:</span>
+                <input type="range" id="brushSize" min="2" max="20" value="5" onchange="updateBrushSize()">
+                <span id="sizeValue">5</span>
+            </div>
+
+            <div class="tool-buttons">
+                <button class="btn eraser-btn" onclick="toggleEraser()">🧹 Eraser</button>
+                <button class="btn btn-clear" onclick="clearCanvas()">🗑️ Clear All</button>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="coloringCanvas" width="600" height="600"></canvas>
+        </div>
+
+        <div class="fun-message">✨ Click and drag to color your favorite animal! ✨</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('coloringCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let currentColor = '#ff6b6b';
+        let brushSize = 5;
+        let isEraser = false;
+        let currentAnimal = 'lion';
+
+        // Animal drawings
+        const animals = {
+            lion: () => {
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#333';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Lion face
+                ctx.beginPath();
+                ctx.arc(300, 300, 120, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Mane
+                for(let i = 0; i < 12; i++) {
+                    const angle = (Math.PI * 2 / 12) * i;
+                    const x = 300 + Math.cos(angle) * 150;
+                    const y = 300 + Math.sin(angle) * 150;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 40, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+                
+                // Eyes
+                ctx.beginPath();
+                ctx.arc(270, 280, 15, 0, Math.PI * 2);
+                ctx.arc(330, 280, 15, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Nose
+                ctx.beginPath();
+                ctx.moveTo(300, 320);
+                ctx.lineTo(285, 340);
+                ctx.lineTo(315, 340);
+                ctx.closePath();
+                ctx.stroke();
+                
+                // Mouth
+                ctx.beginPath();
+                ctx.arc(285, 340, 15, 0, Math.PI);
+                ctx.arc(315, 340, 15, 0, Math.PI);
+                ctx.stroke();
+            },
+            
+            elephant: () => {
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#333';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Body
+                ctx.beginPath();
+                ctx.ellipse(300, 350, 150, 120, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Head
+                ctx.beginPath();
+                ctx.arc(300, 220, 80, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Trunk
+                ctx.beginPath();
+                ctx.moveTo(300, 300);
+                ctx.quadraticCurveTo(280, 380, 320, 420);
+                ctx.quadraticCurveTo(340, 440, 330, 460);
+                ctx.stroke();
+                
+                // Ears
+                ctx.beginPath();
+                ctx.ellipse(220, 220, 50, 70, -0.3, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.ellipse(380, 220, 50, 70, 0.3, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Eyes
+                ctx.beginPath();
+                ctx.arc(270, 210, 10, 0, Math.PI * 2);
+                ctx.arc(330, 210, 10, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Legs
+                ctx.strokeRect(220, 420, 40, 80);
+                ctx.strokeRect(340, 420, 40, 80);
+            },
+            
+            butterfly: () => {
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#333';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Body
+                ctx.beginPath();
+                ctx.ellipse(300, 300, 20, 60, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Upper wings
+                ctx.beginPath();
+                ctx.ellipse(230, 250, 80, 100, -0.3, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.ellipse(370, 250, 80, 100, 0.3, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Lower wings
+                ctx.beginPath();
+                ctx.ellipse(240, 340, 60, 80, -0.2, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.ellipse(360, 340, 60, 80, 0.2, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Wing patterns
+                ctx.beginPath();
+                ctx.arc(230, 250, 30, 0, Math.PI * 2);
+                ctx.arc(370, 250, 30, 0, Math.PI * 2);
+                ctx.arc(240, 340, 20, 0, Math.PI * 2);
+                ctx.arc(360, 340, 20, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Antennae
+                ctx.beginPath();
+                ctx.moveTo(290, 240);
+                ctx.quadraticCurveTo(280, 200, 270, 190);
+                ctx.moveTo(310, 240);
+                ctx.quadraticCurveTo(320, 200, 330, 190);
+                ctx.stroke();
+                
+                // Antenna tips
+                ctx.beginPath();
+                ctx.arc(270, 190, 5, 0, Math.PI * 2);
+                ctx.arc(330, 190, 5, 0, Math.PI * 2);
+                ctx.stroke();
+            },
+            
+            parrot: () => {
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#333';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Body
+                ctx.beginPath();
+                ctx.ellipse(300, 380, 80, 120, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Head
+                ctx.beginPath();
+                ctx.arc(300, 250, 60, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Beak
+                ctx.beginPath();
+                ctx.moveTo(260, 250);
+                ctx.quadraticCurveTo(230, 260, 240, 280);
+                ctx.lineTo(260, 270);
+                ctx.stroke();
+                
+                // Eye
+                ctx.beginPath();
+                ctx.arc(285, 240, 12, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(285, 240, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Wing
+                ctx.beginPath();
+                ctx.ellipse(360, 360, 40, 90, 0.3, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Tail feathers
+                ctx.beginPath();
+                ctx.moveTo(300, 480);
+                ctx.lineTo(280, 550);
+                ctx.moveTo(300, 480);
+                ctx.lineTo(300, 550);
+                ctx.moveTo(300, 480);
+                ctx.lineTo(320, 550);
+                ctx.stroke();
+                
+                // Feet
+                ctx.beginPath();
+                ctx.moveTo(280, 490);
+                ctx.lineTo(280, 510);
+                ctx.moveTo(270, 510);
+                ctx.lineTo(290, 510);
+                ctx.moveTo(320, 490);
+                ctx.lineTo(320, 510);
+                ctx.moveTo(310, 510);
+                ctx.lineTo(330, 510);
+                ctx.stroke();
+                
+                // Crest
+                ctx.beginPath();
+                ctx.moveTo(300, 190);
+                ctx.lineTo(290, 170);
+                ctx.moveTo(300, 190);
+                ctx.lineTo(300, 165);
+                ctx.moveTo(300, 190);
+                ctx.lineTo(310, 170);
+                ctx.stroke();
+            },
+            
+            cat: () => {
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#333';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Body
+                ctx.beginPath();
+                ctx.ellipse(300, 400, 100, 80, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Head
+                ctx.beginPath();
+                ctx.arc(300, 280, 70, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Ears
+                ctx.beginPath();
+                ctx.moveTo(250, 250);
+                ctx.lineTo(230, 200);
+                ctx.lineTo(270, 220);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(350, 250);
+                ctx.lineTo(370, 200);
+                ctx.lineTo(330, 220);
+                ctx.stroke();
+                
+                // Eyes
+                ctx.beginPath();
+                ctx.ellipse(275, 270, 12, 18, 0, 0, Math.PI * 2);
+                ctx.ellipse(325, 270, 12, 18, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Pupils
+                ctx.beginPath();
+                ctx.ellipse(275, 275, 4, 8, 0, 0, Math.PI * 2);
+                ctx.ellipse(325, 275, 4, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Nose
+                ctx.beginPath();
+                ctx.moveTo(300, 300);
+                ctx.lineTo(290, 310);
+                ctx.lineTo(310, 310);
+                ctx.closePath();
+                ctx.stroke();
+                
+                // Mouth
+                ctx.beginPath();
+                ctx.arc(290, 310, 10, 0, Math.PI);
+                ctx.arc(310, 310, 10, 0, Math.PI);
+                ctx.stroke();
+                
+                // Whiskers
+                ctx.beginPath();
+                ctx.moveTo(240, 280);
+                ctx.lineTo(180, 270);
+                ctx.moveTo(240, 300);
+                ctx.lineTo(180, 300);
+                ctx.moveTo(360, 280);
+                ctx.lineTo(420, 270);
+                ctx.moveTo(360, 300);
+                ctx.lineTo(420, 300);
+                ctx.stroke();
+                
+                // Tail
+                ctx.beginPath();
+                ctx.moveTo(380, 420);
+                ctx.quadraticCurveTo(450, 400, 460, 320);
+                ctx.quadraticCurveTo(465, 280, 450, 260);
+                ctx.stroke();
+                
+                // Paws
+                ctx.beginPath();
+                ctx.ellipse(260, 460, 20, 30, 0, 0, Math.PI * 2);
+                ctx.ellipse(340, 460, 20, 30, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            },
+            
+            owl: () => {
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#333';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Body
+                ctx.beginPath();
+                ctx.ellipse(300, 400, 100, 130, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Head
+                ctx.beginPath();
+                ctx.arc(300, 250, 90, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Ear tufts
+                ctx.beginPath();
+                ctx.moveTo(230, 200);
+                ctx.lineTo(220, 160);
+                ctx.lineTo(250, 180);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(370, 200);
+                ctx.lineTo(380, 160);
+                ctx.lineTo(350, 180);
+                ctx.stroke();
+                
+                // Large eyes
+                ctx.beginPath();
+                ctx.arc(270, 250, 35, 0, Math.PI * 2);
+                ctx.arc(330, 250, 35, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Inner eyes
+                ctx.beginPath();
+                ctx.arc(270, 250, 20, 0, Math.PI * 2);
+                ctx.arc(330, 250, 20, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Pupils
+                ctx.beginPath();
+                ctx.arc(270, 250, 10, 0, Math.PI * 2);
+                ctx.arc(330, 250, 10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Beak
+                ctx.beginPath();
+                ctx.moveTo(300, 280);
+                ctx.lineTo(290, 300);
+                ctx.lineTo(310, 300);
+                ctx.closePath();
+                ctx.stroke();
+                
+                // Wing details
+                ctx.beginPath();
+                ctx.ellipse(230, 380, 30, 80, -0.2, 0, Math.PI * 2);
+                ctx.ellipse(370, 380, 30, 80, 0.2, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Feet
+                ctx.beginPath();
+                ctx.moveTo(270, 520);
+                ctx.lineTo(270, 540);
+                ctx.moveTo(260, 540);
+                ctx.lineTo(280, 540);
+                ctx.moveTo(330, 520);
+                ctx.lineTo(330, 540);
+                ctx.moveTo(320, 540);
+                ctx.lineTo(340, 540);
+                ctx.stroke();
+                
+                // Belly pattern
+                ctx.beginPath();
+                ctx.arc(300, 400, 60, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        };
+
+        // Initialize with lion
+        animals.lion();
+
+        function selectAnimal(animal) {
+            currentAnimal = animal;
+            document.querySelectorAll('.animal-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Clear and redraw
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            animals[animal]();
+        }
+
+        function selectColor(color) {
+            currentColor = color;
+            isEraser = false;
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            document.querySelector('.eraser-btn').classList.remove('active');
+        }
+
+        function toggleEraser() {
+            isEraser = !isEraser;
+            event.target.classList.toggle('active');
+            if (isEraser) {
+                document.querySelectorAll('.color-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            }
+        }
+
+        function updateBrushSize() {
+            brushSize = document.getElementById('brushSize').value;
+            document.getElementById('sizeValue').textContent = brushSize;
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            animals[currentAnimal]();
+        }
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getMousePos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const pos = getMousePos(e);
+            ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
+            ctx.strokeStyle = currentColor;
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.beginPath();
+            }
+        }
+
+        // Mouse events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const mouseEvent = new MouseEvent('mouseup', {});
+            canvas.dispatchEvent(mouseEvent);
+        });
+    </script>
+</body>
+</html>
